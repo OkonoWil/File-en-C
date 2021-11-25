@@ -69,16 +69,16 @@ int retirer(){
 
 //Fonction d'affichage()
 void afficher(){
-    if(filevide()!=0){
+    if(!filevide()){
         File L = F; //Sauvegade de la tête de file
         while(L->next!=NULL){
             printf("[%d] <-  ", L->elt);
             L=L->next;
         }
-        printf("[%d] ", L->elt);
+        printf("[%d] \n", L->elt);
     }
     else{
-        printf("Erreur : la file est vide\n");
+        printf("Erreur : la file est vide!!!\n");
     }
 }
 
@@ -102,7 +102,7 @@ void menu(){
         //Exécution d'un bout de code en fonction du choix
         switch(choix){
             case 1:
-                printf("quel element voulez vous inserer ");
+                printf("quel element voulez vous inserer : ");
                 scanf("%d",&elt);
                 inserer(elt);
                 break;
@@ -112,15 +112,15 @@ void menu(){
                 break;
             case 3:
                 if(filepleine(F))
-                    printf("la pile est pleine\n");
+                    printf("la file est pleine\n");
                 else
-                    printf("le pile nest pas pleine\n");
+                    printf("le file n'est pas pleine\n");
                 break;
             case 4:
                 if(filevide(F))
-                    printf("la pile est pleine\n");
+                    printf("la file est vide\n");
                 else
-                    printf("la pile nest pas pleine\n");
+                    printf("la file n'est pas vide\n");
                 break;
             case 5:
                 afficher(F);
@@ -129,7 +129,7 @@ void menu(){
                 printf("le choix est incorrect\n");
         }
         //On démande à l'utisateur s'il veut sortir du menu
-        printf("voulez vous continuer (1-oui,0-non)");
+        printf("voulez vous continuer (1-oui,0-non) : ");
         scanf("%d",&choix2);
 
     } while(choix2==1);//L'utilisateur doit saisir un nombre != 1pour quitter
