@@ -7,7 +7,6 @@
         struct File * next;
     }*File;
 
-    int tailleF();
     int filevide();
     int filepleine();
     void inserer(int y);

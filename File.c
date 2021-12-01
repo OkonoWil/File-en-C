@@ -3,23 +3,12 @@
 #include"File.h"
 
 File F;
-
-//Fonction tailleF() qui retourne le nombre d'élément dans la file
-int tailleF(){
-    int s = 0; //Compteur
-    File L=F;
-    while (L!=NULL){
-        //Tantque la pile pointe vers un élément on incrémente le compteur
-        s++;
-        L=L->next;
-    }
-    return s;
-}
+int nbrElement = 0; //nombre d'élément dans la file
 
 //Fonction pleine()
 int filevide(){
     int i = 0; //n'est pas vide
-    if (F==NULL)
+    if (nbrElement==0)
         i = 1; //est vide
     return i;
 }
@@ -27,49 +16,55 @@ int filevide(){
 //Fonction pleine()
 int filepleine(){
     int i = 0;    //N'est pas pleine
-    if(T==tailleF())
+    if(nbrElement==T)
         i = 1;  //est pleine
     return i;
 }
 
-//Fonction inserer()
+//Fonction inserer() : ici il s'agit d'une insertion en queue
 void inserer(int y){
-    
     if(filepleine()==0){
+        //Si la file n'est pas pleine on insere un élément
         //Créaction de l'élément à inserer
         File L = malloc(sizeof(File));
         L->elt = y;
         L->next = NULL;
-        if(filevide()==1)
+        if(filevide()==1)//Si la file est vide alors :
+
             F = L;
         else{    
-        //Sauvegade de la tête de file
-            File Fo = F;
+            File Fo = F; //Sauvegade de la tête de file
             while(Fo->next!=NULL)
                 Fo = Fo->next;
             Fo->next = L;
         }
+        nbrElement++;
     }
+    else//Dans le cas contraire on affiche un message d'erreur
+        printf("Erreur : la file est deja pleine\n");
 }
 
-//Fonction retirer()
+//Fonction retirer() : on retire l'élément quiest en tête de pile.
 int retirer(){
     int result;
     if(filevide(F)==0){
+        //si la file n'est pas vide on retire un élément 
         result = F->elt;
-        //Sauvegade de la tête de file
-        File L = F;
+        File L = F; //Sauvegade de la tête de file
         F = F->next;
         L->next = NULL;
-        free(L);
+        free(L); //Libére la mémoire
+        nbrElement--; //on effectue la décrémentation nombre d'élément dans la file
     }
+   else //Dans le cas contraire on affiche un message d'erreur à l'utilisateur.
+        printf("Erreur : la file est vide\n");
     return result;
 }
 
 
 //Fonction d'affichage()
 void afficher(){
-    if(!filevide()){
+    if(!filevide()){ //si la file n'est pas vide on affiche les éléments qu'elle contient 
         File L = F; //Sauvegade de la tête de file
         while(L->next!=NULL){
             printf("[%d] <-  ", L->elt);
@@ -77,9 +72,9 @@ void afficher(){
         }
         printf("[%d] \n", L->elt);
     }
-    else{
-        printf("Erreur : la file est vide!!!\n");
-    }
+    else //Dans le cas contraire on affiche un message à l'utilisateur.
+        printf("La file ne contient aucun element!!!\n");
+    
 }
 
 //Menu à 5 option 
@@ -90,12 +85,12 @@ void menu(){
     se repéte tant que l'utilisateur ne décide pas de sortir de la boucle*/
   do{
         //Liste des options
-        printf("\n\nMENU\n");
-        printf("1.Inserer\n");
-        printf("2.Retirer\n");
-        printf("3.Est Pleine\n");
-        printf("4.Est Vide\n");
-        printf("5.Afficher\n");
+        printf("\n-------------------MENU-------------------\n");
+        printf("1.\tInserer\n");
+        printf("2.\tRetirer\n");
+        printf("3.\tEst Pleine\n");
+        printf("4.\tEst Vide\n");
+        printf("5.\tAfficher\n\n");
         printf("entrer votre choix : ");
         //Récupération du choix de l'utilisateur
         scanf("%d",&choix);
@@ -107,8 +102,13 @@ void menu(){
                 inserer(elt);
                 break;
             case 2:
-                elt=retirer(F);
-                printf("l element retire est [%d]\n", elt);
+                
+                if(!filevide()){
+                    elt=retirer(F);
+                    printf("l element retire est [%d]\n", elt);
+                }    
+                else
+                    printf("Erreur : la file est vide\n");
                 break;
             case 3:
                 if(filepleine(F))
@@ -134,10 +134,3 @@ void menu(){
 
     } while(choix2==1);//L'utilisateur doit saisir un nombre != 1pour quitter
 }
-
-
-
-
-
-
-
